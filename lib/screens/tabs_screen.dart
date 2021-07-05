@@ -33,11 +33,11 @@ class _TabsScreenState extends State<TabsScreen> {
         currentIndex: _selectedPageIndex,
         items: [
           BottomNavigationBarItem(
-            title: Text('Categories'),
+            label: 'Categories',
             icon: Icon(Icons.category),
           ),
           BottomNavigationBarItem(
-            title: Text('Favourites'),
+            label: 'Favourites',
             icon: Icon(Icons.star),
           ),
         ],

@@ -20,12 +20,10 @@ class _MealDetailScreenState extends State<MealDetailScreen> {
       ),
       body: SingleChildScrollView(
         child: Column(
-          children: <Widget>[
-            buildImageContainer(context),
-            buildTitle(context, 'Ingredients'),
-            buildConstrainedBox(context, buildIngredientsList()),
-            buildTitle(context, 'Steps'),
-            buildConstrainedBox(context, buildStepListView()),
+          children: [
+            buildImageContainer(),
+            _buildExpandedList('Ingredients', _buildIngredientsList),
+            _buildExpandedList('Steps', buildStepListView),
           ],
         ),
       ),
@@ -47,9 +45,10 @@ class _MealDetailScreenState extends State<MealDetailScreen> {
     );
   }
 
-  ListView buildStepListView() {
+  ListView get buildStepListView {
     return ListView.builder(
         shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
         itemCount: widget.theMeal.steps.length,
         itemBuilder: (context, index) {
           return Column(
@@ -68,29 +67,19 @@ class _MealDetailScreenState extends State<MealDetailScreen> {
         });
   }
 
-  ConstrainedBox buildConstrainedBox(BuildContext context, Widget child) {
-    return ConstrainedBox(
-      constraints: BoxConstraints(
-        maxWidth: MediaQuery.of(context).size.width * 0.75,
-        maxHeight: MediaQuery.of(context).size.height * 0.25,
-      ),
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-            border: Border.all(color: Colors.grey),
-            color: Colors.white),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
-          child: child,
-        ),
-      ),
+  Container buildImageContainer() {
+    return Container(
+      width: double.infinity,
+      height: MediaQuery.of(context).size.height * 0.35,
+      child: Image.network(widget.theMeal.imageUrl, fit: BoxFit.cover),
     );
   }
 
-  ListView buildIngredientsList() {
+  ListView get _buildIngredientsList {
     return ListView.builder(
         shrinkWrap: true,
         itemCount: widget.theMeal.ingredients.length,
+        physics: NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
           return Card(
             color: Theme.of(context).accentColor,
@@ -103,18 +92,10 @@ class _MealDetailScreenState extends State<MealDetailScreen> {
         });
   }
 
-  Container buildImageContainer(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: MediaQuery.of(context).size.height * 0.35,
-      child: Image.network(widget.theMeal.imageUrl, fit: BoxFit.cover),
-    );
-  }
-
-  Padding buildTitle(BuildContext context, String title) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10.0),
-      child: Text(title, style: Theme.of(context).textTheme.title),
+  Widget _buildExpandedList(String title, ListView list) {
+    return ExpansionTile(
+      title: Text(title, style: Theme.of(context).textTheme.headline6),
+      children: [list],
     );
   }
 }

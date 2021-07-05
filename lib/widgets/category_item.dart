@@ -14,11 +14,12 @@ class CategoryItem extends StatelessWidget {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (_) => CategoryMealScreen(
-                  categoryTitle: title,
-                  mealColor: color,
-                  categoryId: id,
-                )));
+          builder: (_) => CategoryMealScreen(
+            categoryTitle: title,
+            mealColor: color,
+            categoryId: id,
+          ),
+        ));
   }
 
   @override
@@ -32,7 +33,7 @@ class CategoryItem extends StatelessWidget {
         child: Text(title,
             style: Theme.of(context)
                 .textTheme
-                .title
+                .headline6
                 .copyWith(color: Color.fromRGBO(255, 254, 229, 1))),
         decoration: BoxDecoration(
             gradient: LinearGradient(
